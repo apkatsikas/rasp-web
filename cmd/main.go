@@ -17,7 +17,7 @@ const (
 	httpsPort    = ":443"
 	httpPort     = ":80"
 	certsDir     = "certs"
-	newhellMusic = "newhell.duckdns.org"
+	newhellMusic = "newhellstudios.link"
 )
 
 func main() {
@@ -43,7 +43,6 @@ func main() {
 		Prompt: autocert.AcceptTOS,
 		HostPolicy: autocert.HostWhitelist(
 			newhellMusic,
-			// maybe newhell.link here?
 		),
 		Cache: autocert.DirCache(certsDir),
 	}
