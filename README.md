@@ -1,4 +1,14 @@
-mount drive - sudo mount /dev/sda /media/ssd/
+`ls -l /dev/disk/by-uuid/` - get uuid
+
+`df -Th` - get filesystem type
+
+ext4
+
+be sure to enable service not just create entry and start
+
+UUID=2d52db9d-3bb2-4b8e-b5de-9764cce7594a /media/ssd/ ext4 defaults,nofail,x-system.automount 0 2
+
+mount drive - `sudo mount /dev/sda /media/ssd/`
 
 make sure everything can boot and work
 
