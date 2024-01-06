@@ -1,21 +1,29 @@
+## Security
+sudo firewall-cmd --add-port=443/tcp --permanent
+sudo firewall-cmd --add-port=22/tcp --permanent
+
+## Disk
 `ls -l /dev/disk/by-uuid/` - get uuid
 
 `df -Th` - get filesystem type
 
 ext4
 
-be sure to enable service not just create entry and start
+mount drive - `sudo mount /dev/sda /media/ssd/`
 
 UUID=2d52db9d-3bb2-4b8e-b5de-9764cce7594a /media/ssd/ ext4 defaults,nofail,x-system.automount 0 2
 
-mount drive - `sudo mount /dev/sda /media/ssd/`
-
-make sure everything can boot and work
+## Services
+be sure to enable service not just create entry and start
 
 sudo useradd rasp-web
 sudo install -d -o rasp-web -g rasp-web /var/lib/rasp-web
 PORTS - sudo setcap CAP_NET_BIND_SERVICE=+eip /opt/rasp-web/rasp-web
 make it executable?
+
+## Systemd
+
+### rasp-web
 
 [Unit]
 Description=rasp-web https go web server
@@ -36,6 +44,8 @@ Restart=on-failure
 KillMode=control-group
 TimeoutStopSec=20
 WorkingDirectory=/var/lib/rasp-web
+
+### navi
 
 [Unit]
 Description=Navidrome Music Server and Streamer compatible with Subsonic/Airsonic
@@ -84,6 +94,9 @@ ProtectSystem=full
 
 # You can customize some Navidrome config options by setting environment variables here. Ex:
 #Environment=ND_BASEURL="/navidrome"
+
+
+### ddns
 
 [Unit]
 Description=ddns-route53
