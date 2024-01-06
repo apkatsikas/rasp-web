@@ -1,3 +1,16 @@
+## networking
+
+port forward 443 to pi via router
+
+sudo vim /etc/dhcpcd.conf
+
+### Static IP
+
+interface eth0
+static ip_address=192.168.1.246/24
+static routers=192.168.1.1 # ip r
+static domain_name_servers=192.168.1.1 # cat /etc/resolv.conf
+
 ## Security
 sudo firewall-cmd --add-port=443/tcp --permanent
 sudo firewall-cmd --add-port=22/tcp --permanent
