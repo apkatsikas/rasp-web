@@ -131,3 +131,17 @@ Environment=SCHEDULE="*/30 * * * *"
 
 [Install]
 WantedBy=multi-user.target
+
+credentials:
+  accessKeyID: ""
+  secretAccessKey: ""
+
+route53:
+  hostedZoneID: ""
+  recordsSet:
+    - name: "newhellstudios.link."
+      type: "A"
+      ttl: 300
+    - name: "collect.newhellstudios.link."
+      type: "A"
+      ttl: 300

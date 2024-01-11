@@ -7,6 +7,7 @@ import (
 	"net/url"
 	"time"
 
+	"github.com/apkatsikas/newhell-web/hostrouter"
 	"github.com/go-chi/chi/v5"
 	"golang.org/x/crypto/acme/autocert"
 )
@@ -18,20 +19,44 @@ const (
 	httpPort     = ":80"
 	certsDir     = "certs"
 	newhellMusic = "newhellstudios.link"
+	collect      = "collect.newhellstudios.link"
 )
 
 func main() {
-	fmt.Println("TESTING")
+	fmt.Println("RUNNING")
+
+	r := chi.NewRouter()
+	hr := hostrouter.New()
+
 	navidrome, err := url.Parse("http://localhost:4533")
 	if err != nil {
 		panic(fmt.Sprintf("Got error trying to parse navidrome URL %s", err))
 	}
-	fmt.Println("NewSingleHostReverseProxy")
+
+	slskd, err := url.Parse("http://localhost:5030")
+	if err != nil {
+		panic(fmt.Sprintf("Got error trying to parse slskd URL %s", err))
+	}
+
+	fmt.Println("NewSingleHostReverseProxy - Navidrome")
 	navidromeProxy := httputil.NewSingleHostReverseProxy(navidrome)
 	naviRouter := chi.NewRouter()
 	naviRouter.HandleFunc("/*", func(w http.ResponseWriter, r *http.Request) {
 		navidromeProxy.ServeHTTP(w, r)
 	})
+
+	fmt.Println("NewSingleHostReverseProxy - slskd")
+	slskdProxy := httputil.NewSingleHostReverseProxy(slskd)
+	slskdRouter := chi.NewRouter()
+	slskdRouter.HandleFunc("/*", func(w http.ResponseWriter, r *http.Request) {
+		slskdProxy.ServeHTTP(w, r)
+	})
+
+	fmt.Println("map and mount")
+	hr.Map(collect, slskdRouter)
+	hr.Map(newhellMusic, naviRouter)
+
+	r.Mount("/", hr)
 
 	fmt.Println("http ListenAndServe")
 	// Redirect HTTP traffic to https
@@ -43,6 +68,7 @@ func main() {
 		Prompt: autocert.AcceptTOS,
 		HostPolicy: autocert.HostWhitelist(
 			newhellMusic,
+			collect,
 		),
 		Cache: autocert.DirCache(certsDir),
 	}
@@ -55,7 +81,7 @@ func main() {
 		IdleTimeout:  idleTimeout * time.Second,
 		Addr:         httpsPort,
 		TLSConfig:    m.TLSConfig(),
-		Handler:      naviRouter,
+		Handler:      r,
 	}
 
 	fmt.Println("GONNA SERVE")
