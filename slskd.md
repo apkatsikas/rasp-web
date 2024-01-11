@@ -42,3 +42,6 @@ sudo systemctl daemon-reload
 
 
 STILL NEED TO ENABLE SERVICE AND TURN OFF FIREWALLS AND PORT FORWARDS
+
+sudo firewall-cmd --remove-port=5030/tcp --permanent
+sudo firewall-cmd --reload
