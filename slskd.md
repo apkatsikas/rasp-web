@@ -12,7 +12,7 @@ sudo firewall-cmd --add-port=50300/udp --permanent
 
 wget https://github.com/slskd/slskd/releases/download/0.19.5/slskd-0.19.5-linux-arm64.zip
 
-sudo useradd slskd
+sudo useradd -m slskd
 sudo install -d -o slskd -g slskd /var/lib/slskd
 sudo install -d -o slskd -g slskd /opt/slskd
 sudo chown -R slskd:slskd /media/ssd/music
