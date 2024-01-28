@@ -145,3 +145,12 @@ route53:
     - name: "collect.newhellstudios.link."
       type: "A"
       ttl: 300
+
+TO ADD SOMEONE LIKE JASON TO WRITE TO /media/ssd/music
+sudo adduser --disabled-password jason
+sudo passwd -d jason
+sudo usermod jason -g slskd
+WHICH ONE?
+sudo usermod -aG slskd jason
+sudo chmod g+rwx /media/ssd/music/
+sudo vim /home/jason/.ssh/authorized_keys
